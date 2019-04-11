@@ -11,84 +11,92 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.swing.JOptionPane;
 
 public class User extends Person {
-	private boolean guest;
-	private String username;
-	private byte[] encryptedPassword;
-	private byte[] salt;
-	private boolean loggedin;
-	
-	public User(boolean guest, String username) {
-		this.guest = guest;
-		if (guest) {
-			this.setName("Guest", "User"); // ºñÈ¸¿ø/Guest User
-		}
-	}
-	
-	public User(
-			String username, String password,
-			String first, String last,
-			int birthYear, int birthMonth, int birthDay,
-			int gender, int tel,
-			String email
-			) {
-		this.username = username;
-		this.setName(first, last);
-		this.setBirthdate(birthYear*10000 + birthMonth*100 + birthDay);
-		this.setGender(gender);
-		this.setEmail(email);
-		this.setTel(tel);
-		
-		try {
-			generateSalt();
-			this.encryptedPassword = getEncryptedPassword(password);
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
-		}
-	}
-	
-	/**
-	 * login ±â´É
-	 * 
-	 * HashMap<String, User> userlist¸¦ ÅëÇØ ´ºÀú³×ÀÓÀ» Ã£¾Æ¼­
-	 * ¸¸¾à¿¡ ÀÖÀ¸¸é userlist.get("À¯Àú³×ÀÓ").login("ÆĞ½º¿öµå")¸¦ ÇÑ´Ù
-	 * 
-	 * @param password ¾ÏÈ£(ºñ¹Ğ¹øÈ£)
-	 * @return ·Î±×ÀÎ ¼º°ø °á°ú
-	 */
-	public boolean login(String password) {
-		try {
-			if (authenticate(password)) {
-				loggedin = true;
-				return true;
-			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
-		}
-		return false;
-	}
-	
-	public boolean authenticate(String attemptedPassword)
-			   throws NoSuchAlgorithmException, InvalidKeySpecException {
-		
-			  byte[] encryptedAttemptedPassword = getEncryptedPassword(attemptedPassword);
-			  
-			  return Arrays.equals(encryptedPassword, encryptedAttemptedPassword);
-		}
-	
-	public byte[] getEncryptedPassword(String password)
-			throws NoSuchAlgorithmException, InvalidKeySpecException {
-		String algorithm = "PBKDF2WithHmacSHA1";
-		int derivedKeyLength = 160;
-		int iterations = 20000; // ´õ Å©¸é Å¬¼ö·Ï ¾ÈÀüÇÔ (ÇÏÁö¸¸ ¼Óµµ°¡ ´À·ÁÁü)
-		KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, derivedKeyLength);
-		SecretKeyFactory f = SecretKeyFactory.getInstance(algorithm);
-		return f.generateSecret(spec).getEncoded();
-	}
-	
-	public void generateSalt() throws NoSuchAlgorithmException {
-		  SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-		  byte[] salt = new byte[8];
-		  random.nextBytes(salt);
-		  this.salt = salt;
-	}
+    private boolean guest;
+    private String username;
+    private byte[] encryptedPassword;
+    private byte[] salt;
+    private boolean loggedin;
+    private UserList userList;
+
+    public User(boolean guest, String username) {
+        this.guest = guest;
+        if (guest) {
+            this.setName("Guest"); // ë¹„íšŒì›/Guest
+        }
+        userList.add(username, this);
+    }
+
+    public User(
+            String username, char[] password,
+            String fullname,
+            int birthdate,
+            int gender, int tel,
+            String email
+    ) {
+        this.username = username;
+        this.setName(fullname);
+        this.setBirthdate(birthdate);
+        this.setGender(gender);
+        this.setEmail(email);
+        this.setTel(tel);
+
+        try {
+            generateSalt();
+            this.encryptedPassword = getEncryptedPassword(password);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        userList.add(username, this);
+    }
+
+    /**
+     * login ê¸°ëŠ¥
+     *
+     * HashMap<String, User> userlistë¥¼ í†µí•´ ë‰´ì €ë„¤ì„ì„ ì°¾ì•„ì„œ
+     * ë§Œì•½ì— ìˆìœ¼ë©´ userlist.get("ìœ ì €ë„¤ì„").login("íŒ¨ìŠ¤ì›Œë“œ")ë¥¼ í•œë‹¤
+     *
+     * @param password ì•”í˜¸(ë¹„ë°€ë²ˆí˜¸)
+     * @return ë¡œê·¸ì¸ ì„±ê³µ ê²°ê³¼
+     */
+    public boolean login(char[] password) {
+        try {
+            if (authenticate(password)) {
+                loggedin = true;
+                return true;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean authenticate(char[] attemptedPassword)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
+
+        byte[] encryptedAttemptedPassword = getEncryptedPassword(attemptedPassword);
+
+        return Arrays.equals(encryptedPassword, encryptedAttemptedPassword);
+    }
+
+    public byte[] getEncryptedPassword(char[] password)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
+        String algorithm = "PBKDF2WithHmacSHA1";
+        int derivedKeyLength = 160;
+        int iterations = 20000; // ë” í¬ë©´ í´ìˆ˜ë¡ ì•ˆì „í•¨ (í•˜ì§€ë§Œ ì†ë„ê°€ ëŠë ¤ì§)
+        KeySpec spec = new PBEKeySpec(password, salt, iterations, derivedKeyLength);
+        SecretKeyFactory f = SecretKeyFactory.getInstance(algorithm);
+        return f.generateSecret(spec).getEncoded();
+    }
+
+    public void generateSalt() throws NoSuchAlgorithmException {
+        SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+        byte[] salt = new byte[8];
+        random.nextBytes(salt);
+        this.salt = salt;
+    }
+
+    public String getUsername() {
+        return username;
+    }
 }

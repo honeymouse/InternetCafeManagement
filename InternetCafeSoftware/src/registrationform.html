@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Registration Form</title>
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <style>
+        body{
+            font:12px/15px Roboto, "Helvetica Neue", Helvetica, sans-serif;
+        }
+        select,
+        input,
+        .btn {
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        }
+        #wrapper {
+            margin:0 auto;
+        }
+        .main-form {
+            width: 360px;
+            min-height: 360px;
+            background: #fff;
+            border-radius: 60px;
+            margin:0px auto 20px;
+            padding: 20px;
+        }
+        .form-logo {
+            font-size: 100px;
+            color: #708090;
+        }
+    </style>
+</head>
+<body>
+<script>
+function newAccount() {
+    var fullname = document.getElementById("fullname").value;
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+    var gender = document.getElementById("gender").value;
+    var birthdate = document.getElementById("birthdate").value;
+    var phone = document.getElementById("phone").value;
+    var email = document.getElementById("email").value;
+    AccountService.createAccount(username, password, fullname, birthdate, gender, phone, email);
+}
+</script>
+<div id="wrapper">
+    <div class="main-form">
+        <form action="#" method="POST">
+            <fieldset>
+                <div class="text-center">
+                    <span class="form-logo glyphicon glyphicon-user"></span>
+                </div>
+                <div class="form-body">
+                    <h1 class="form-title text-center">회원가입</h1>
+                    <div class="form-group">
+                        <input class="form-control" type="text" id="fullname" name="fullname" placeholder="이름" required>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="text" id="username" name="username" placeholder="아이디" required>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="password" id="password" name="password" placeholder="비밀번호" required>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="text" id="birthdate" name="birthdate" placeholder="생년월일" required>
+                    </div>
+                    <div class="form-group" align="center" required>
+                        <div class="radio-inline">
+                          <label><input type="radio" name="gender" value="male">남</label>
+                        </div>
+                        <div class="radio-inline">
+                          <label><input type="radio" name="gender" value="female">여</label>
+                        </div>
+                    </div>
+                    <div class="form-group" required>
+                        <input class="form-control" type="text" id="phone" name="phone" placeholder="전화번호">
+                    </div>
+                    <div class="form-group" required>
+                        <input class="form-control" type="email" id="email" name="email" placeholder="이메일">
+                    </div>
+                    <div class="form-group text-center">
+                        <button class="btn btn-default btn-lg" type="button" onclick="newAccount();">가입하기</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+</body>
+</html>
