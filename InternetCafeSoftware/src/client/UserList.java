@@ -4,11 +4,19 @@ import javax.swing.*;
 import java.io.*;
 import java.util.HashMap;
 
-public class UserList {
-    private HashMap<String, User> userList;
+public class UserList implements Serializable {
+    private static HashMap<String, User> userList;
+
+    public UserList() {
+        userList = new HashMap<String, User>();
+        load();
+    }
 
     public void add(String username, User user) {
+        System.out.println("added user");
         userList.put(username, user);
+        save();
+        load();
     }
 
     public void save() {
@@ -40,6 +48,8 @@ public class UserList {
     }
 
     public boolean contains(String username) {
+        System.out.println("check to see if it contains username");
+        System.out.println(userList.containsValue(username));
         return userList.containsKey(username);
     }
 

@@ -1,6 +1,8 @@
 package client;
 
-public class Person implements PersonalInfo {
+import java.io.Serializable;
+
+public class Person implements PersonalInfo, Serializable {
 
     private String name, email;
     private int birthdate, tel, gender;

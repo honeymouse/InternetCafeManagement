@@ -1,5 +1,6 @@
 package client;
 
+import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -10,19 +11,39 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.swing.JOptionPane;
 
-public class User extends Person {
+public class User extends Person implements Serializable {
     private boolean guest;
     private String username;
     private byte[] encryptedPassword;
     private byte[] salt;
     private boolean loggedin;
-    private UserList userList;
+    private UserList userList = new UserList();
 
     public User(boolean guest, String username) {
         this.guest = guest;
         if (guest) {
             this.setName("Guest"); // 비회원/Guest
         }
+        userList.add(username, this);
+    }
+
+    public User(
+            String username, char[] password,
+            String fullname,
+            int gender
+    ) {
+        this.username = username;
+        this.setName(fullname);
+        this.setGender(gender);
+
+        try {
+            generateSalt();
+            this.encryptedPassword = getEncryptedPassword(password);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        System.out.println("created new user");
         userList.add(username, this);
     }
 
@@ -98,5 +119,9 @@ public class User extends Person {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getName() {
+        return super.getName();
     }
 }

@@ -11,7 +11,7 @@ public class LoginScreen extends JFrame {
     private JPasswordField passwordField;
     private JPanel loginPanel;
     private JPanel buttonPanel;
-    private UserList userList;
+    private UserList userList = new UserList();
 
     public LoginScreen() {
         super("Login");
@@ -75,7 +75,8 @@ public class LoginScreen extends JFrame {
     private void login() {
         if (userList.contains(usernameField.getText())) {
             if (userList.get(usernameField.getText()).login(passwordField.getPassword())) {
-                JOptionPane.showMessageDialog(this,"환영합니다.");
+                JOptionPane.showMessageDialog(this,"환영합니다, " +
+                        userList.get(usernameField.getText()).getName());
             } else {
                 JOptionPane.showMessageDialog(this, "암호가 틀렸습니다. 다시 입력해 보세요.");
             }
