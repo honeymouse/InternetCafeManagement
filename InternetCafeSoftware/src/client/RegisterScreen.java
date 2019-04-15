@@ -12,6 +12,7 @@ import java.awt.*;
 import java.util.logging.Level;
 
 public class RegisterScreen {
+    private static JFrame frame;
 
     public RegisterScreen() {
         LoggerProvider.setLevel(Level.OFF);
@@ -19,7 +20,7 @@ public class RegisterScreen {
         Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
 
-        JFrame frame = new JFrame();
+        frame = new JFrame();
         frame.getContentPane().add(view, BorderLayout.CENTER);
         frame.setSize(250, 600);
         frame.setLocationRelativeTo(null);
@@ -39,13 +40,14 @@ public class RegisterScreen {
         browser.loadURL("file:///Users/almond/Documents/Programming/InternetCafeSoftware/src/client/form.html");
     }
 
+
+
     public static class Account {
         public void save(String name, String user, String pass, String gender) {
             System.out.println("name = " + name);
-            System.out.println("user = " + user);
-            System.out.println("pass = " + pass);
-            System.out.println("gender = " + gender);
             new User(user, pass.toCharArray(), name, Integer.parseInt(gender));
+            JOptionPane.showMessageDialog(null, "환영합니다, " +name+"님.");
+            frame.dispose();
         }
         public void nothingreally() {
             System.out.println("done");
