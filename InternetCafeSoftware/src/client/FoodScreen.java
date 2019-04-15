@@ -102,10 +102,12 @@ public class FoodScreen extends JFrame {
     private JPanel itemOrderPanel;
     private JPanel totalPricePanel;
     private int totalPrice;
+    private User user;
     ArrayList<Food> orderList;
 
-    public FoodScreen() {
+    public FoodScreen(User user) {
         super("음식주문");
+        this.user = user;
         initNavBar();
         initMiddlePanel();
         initUserPanel();
@@ -116,7 +118,7 @@ public class FoodScreen extends JFrame {
         add(middlePanel, BorderLayout.CENTER);
         add(userPanel, BorderLayout.EAST);
         setSize(900, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -204,7 +206,12 @@ public class FoodScreen extends JFrame {
     }
 
     public void sendOrder() {
-        FoodOrder order; // 서버로 보내기
+        FoodOrder orderToSend; // 서버로 보내기
+        for (Food item : orderList)
+        for (int i=0; i<timeList.length; i++) {
+            if (timeList[i].getName().equals(item.getName()))
+                user.addTime(Integer.parseInt(timeList[i].getName().charAt(0)+""));
+        }
         JOptionPane.showMessageDialog(null, "(WIP) 주문이 정상적으로 접수되었습니다.");
     }
 
@@ -387,8 +394,4 @@ public class FoodScreen extends JFrame {
         switchToRamenPanel();
     }
 
-    public static void main(String[] args) {
-        new FoodScreen();
-
-    }
 }

@@ -22,6 +22,16 @@ public class FoodOrder {
         totalCost += food.getPrice();
     }
 
+    public void addList(ArrayList<Food> orderList, int totalCost, User user) {
+        this.orderList = orderList;
+        this.totalCost = totalCost;
+        name = user.getName();
+    }
+
+    public ArrayList<Food> getOrderList() { return orderList; }
+
+    public String getName() { return name; }
+
     public void remove(int index) {
         totalCost -= orderList.remove(index).getPrice();
     }

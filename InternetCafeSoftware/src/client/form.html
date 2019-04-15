@@ -1,22 +1,154 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <style>
+  body {
+    font-family: Malgun Gothic,sans-serif;
+  }
+  * {box-sizing: border-box}
+
+  /* Full-width input fields */
+  input[type=text], input[type=password] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;
+  }
+
+  input[type=text]:focus, input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+  }
+
+  hr {
+    border: 1px solid #f1f1f1;
+    margin-bottom: 25px;
+  }
+
+  /* Set a style for all buttons */
+  /*button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+  }
+
+  button:hover {
+    opacity:1;
+  }*/
+
+  button {
+    display:inline-block;
+    padding:0.35em 1.2em;
+    border:0.1em solid #FFFFFF;
+    margin:0 0.3em 0.3em 0;
+    border-radius:0.12em;
+    box-sizing: border-box;
+    text-decoration:none;
+    font-family:'Roboto',sans-serif;
+    font-weight:300;
+  }
+button:hover {
+    color:#000000;
+    background-color:#FFFFFF;
+  }
+
+  .form-radio
+  {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+   appearance: none;
+   display: inline-block;
+   position: relative;
+   background-color: #f1f1f1;
+   color: #666;
+   top: 10px;
+   height: 30px;
+   width: 30px;
+   border: 0;
+   border-radius: 50px;
+   cursor: pointer;
+   margin-right: 7px;
+   outline: none;
+  }
+  .form-radio:checked::before
+  {
+   position: absolute;
+   font: 13px/1 'Open Sans', sans-serif;
+   left: 11px;
+   top: 7px;
+   content: '\02143';
+   transform: rotate(40deg);
+  }
+  .form-radio:hover
+  {
+   background-color: #f7f7f7;
+  }
+  .form-radio:checked
+  {
+   background-color: #f1f1f1;
+  }
+  label
+  {
+   font: 15px/1.7 'Open Sans', sans-serif;
+   color: #333;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   cursor: pointer;
+  }
+
+
+  /* Add padding to container elements */
+  .container {
+    padding: 16px;
+  }
+
+  /* Clear floats */
+  .clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+</style>
     <script type="text/javascript">
           function sendFormData() {
-            var firstNameValue = myForm.elements['firstName'].value;
-            var lastNameValue = myForm.elements['lastName'].value;
+            var name = myForm.elements['name'].value;
+            var user = myForm.elements['id'].value;
+            var pass = myForm.elements['pw'].value;
+            var gender = myForm.elements['gender'].value;
             // Invoke the 'save' method of the 'Account' Java object.
-            Account.save(firstNameValue, lastNameValue);
+            Account.save(name, user, pass, gender);
+            Account.nothingreally();
           }
     </script>
 </head>
 <body>
 <form name="myForm">
-    First name: <input type="text" name="firstName"/>
-    <br/>
-    Last name: <input type="text" name="lastName"/>
-    <br/>
-    <input type="button" value="Save" onclick="sendFormData();"/>
+  <label for="name"><b>이름</b></label>
+  <input type="text" placeholder="홍길동" name="name" required>
+
+  <label for="id"><b>아이디</b></label>
+  <input type="text" placeholder="아이디" name="id" required>
+
+  <label for="pw"><b>비밀번호</b></label>
+  <input type="password" placeholder="비밀번호" name="pw" required>
+
+  <label for="re-pw"><b>비밀번호 재확인</b></label>
+  <input type="password" placeholder="비밀번호 재확인" name="re-pw" required>
+
+  <label for="gender"><b>성별</b></label>
+  <input type="radio" name="gender" value="1"> <label for="gender">남</label>
+  <input type="radio" name="gender" value="2"> <label for="gender">여</label>
+
+  <br>
+
+  <input type="button" value="전송" onclick="sendFormData();"/>
 </form>
 </body>
 </html>

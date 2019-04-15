@@ -8,8 +8,14 @@ public class UserList implements Serializable {
     private static HashMap<String, User> userList;
 
     public UserList() {
-        userList = new HashMap<String, User>();
+        userList = new HashMap<>();
         load();
+    }
+
+    public static void UPDATEUSER(User user) {
+        userList.put(user.getName(), user);
+        UserList userList = new UserList();
+        userList.save();
     }
 
     public void add(String username, User user) {
@@ -39,7 +45,7 @@ public class UserList implements Serializable {
             ois.close();
             fis.close();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
+            JOptionPane.showMessageDialog(null, "load: " + e.getMessage());
         }
     }
 

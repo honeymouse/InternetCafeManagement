@@ -18,6 +18,7 @@ public class User extends Person implements Serializable {
     private byte[] salt;
     private boolean loggedin;
     private UserList userList = new UserList();
+    private int timeLeft = 0;
 
     public User(boolean guest, String username) {
         this.guest = guest;
@@ -25,6 +26,21 @@ public class User extends Person implements Serializable {
             this.setName("Guest"); // 비회원/Guest
         }
         userList.add(username, this);
+    }
+
+    public void addTime(int hr) {
+        System.out.println("time added");
+        timeLeft += hr*60;
+        userList.save();
+    }
+
+    public void removeMinute() {
+        timeLeft--;
+        userList.save();
+    }
+
+    public int getTimeLeft() {
+        return timeLeft;
     }
 
     public User(

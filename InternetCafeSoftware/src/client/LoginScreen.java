@@ -11,11 +11,13 @@ public class LoginScreen extends JFrame {
     private JPasswordField passwordField;
     private JPanel loginPanel;
     private JPanel buttonPanel;
-    private UserList userList = new UserList();
+    private UserList userList;
 
     public LoginScreen() {
         super("Login");
         setLayout(new BorderLayout());
+
+        userList = new UserList();
 
         loginPanel = new JPanel();
         loginPanel.setLayout(new BoxLayout(loginPanel, BoxLayout.Y_AXIS));
@@ -77,6 +79,9 @@ public class LoginScreen extends JFrame {
             if (userList.get(usernameField.getText()).login(passwordField.getPassword())) {
                 JOptionPane.showMessageDialog(this,"환영합니다, " +
                         userList.get(usernameField.getText()).getName());
+                new ClientScreen(userList.get(usernameField.getText()));
+                setVisible(false);
+                dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "암호가 틀렸습니다. 다시 입력해 보세요.");
             }
@@ -87,7 +92,6 @@ public class LoginScreen extends JFrame {
     }
 
     public static void main(String[] args) {
-        JOptionPane.showMessageDialog(null, "message");
         new LoginScreen();
     }
 }
